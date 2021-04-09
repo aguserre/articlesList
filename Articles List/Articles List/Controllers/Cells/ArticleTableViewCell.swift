@@ -6,18 +6,35 @@
 //
 
 import UIKit
+import Foundation
 
-class ArticleTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+final class ArticleTableViewCell: UITableViewCell {
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var authorLabel: UILabel!
+    @IBOutlet private weak var dateLabel: UILabel!
+    
+    func setupCell(article: ArticleModel) {
+        titleLabel.text = article.storyTitle
+        authorLabel.text = article.author
+        dateLabel.text = secondsToHoursMinutesSeconds(seconds: article.createdAt ?? Int(Date().timeIntervalSince1970))
+        
     }
     
+    private func secondsToHoursMinutesSeconds (seconds : Int) -> String {
+        let intervalToday = Date().timeIntervalSince1970
+        let intervalDiff = Date(timeIntervalSince1970: intervalToday - TimeInterval(seconds)).timeIntervalSince1970
+
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute]
+
+        formatter.unitsStyle = .abbreviated
+
+        guard let formattedString = formatter.string(from: intervalDiff) else {
+            return ""
+        }
+
+        return " - \(formattedString)"
+    }
 }

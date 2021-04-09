@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ArticleModelCD" representedClassName="ArticleModelCD" syncable="YES" codeGenerationType="class">
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="created_at_i" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="parent_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="story_title" optional="YES" attributeType="String"/>
+        <attribute name="story_url" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ArticlesDeleted" representedClassName="ArticlesDeleted" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="ArticleModelCD" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="ArticlesDeleted" positionX="-54" positionY="27" width="128" height="44"/>
+    </elements>
+</model>

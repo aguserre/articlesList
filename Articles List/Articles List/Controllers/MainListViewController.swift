@@ -8,17 +8,22 @@
 import UIKit
 import Network
 
+
 final class MainListViewController: UIViewController {
     
     private var networkCheck = NetworkCheck.sharedInstance()
     private var refreshControl = UIRefreshControl()
-    private var articles = ["", "", "", "", "", "", "", "", "", "", "", "", "", ""]
-    private let defaults = UserDefaults.standard
+    private var articles = [ArticleModel]()
+    private var articlesIdDeleted = [Int]()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet private weak var articlesTableView: UITableView!
+    @IBOutlet private weak var loader: UIActivityIndicatorView!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLoader()
+        checkIfNetworkActive()
         setupUI()
         setupTableViewDelegates()
         registerTableViewCell()
@@ -27,12 +32,17 @@ final class MainListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        checkIfNetworkActive()
+        networkCheck.addObserver(observer: self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         networkCheck.removeObserver(observer: self)
+    }
+    
+    private func setupLoader() {
+        loader.hidesWhenStopped = true
+        loader.startAnimating()
     }
     
     private func setupTableViewDelegates() {
@@ -59,45 +69,91 @@ final class MainListViewController: UIViewController {
     }
     
     private func checkIfNetworkActive() {
-        if networkCheck.currentStatus == .satisfied{
-            getData()
-        }else{
-            getSavedData()
-        }
-        networkCheck.addObserver(observer: self)
+       if networkCheck.currentStatus == .satisfied{
+            DispatchQueue.main.async {
+                self.getData()
+            }
+       } else {
+            DispatchQueue.main.async {
+                self.getSavedData()
+            }
+       }
+        
         articlesTableView.reloadData()
     }
     
+    private func showAlert(errorDescription: String) {
+        let alert = UIAlertController(title: "Error", message: errorDescription, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func getData() {
-        //get data from API
-        
-        
-        defaults.set(articles, forKey: "articlesSaved")
+        APIController().fetchArticles { (articles, error) in
+            if let error = error {
+                self.showAlert(errorDescription: error.localizedDescription)
+                self.loader.stopAnimating()
+            }
+            
+            if let articles = articles {
+                self.articles = articles
+                self.articlesTableView.reloadData()
+                self.loader.stopAnimating()
+            }
+            
+        }
         refreshControl.endRefreshing()
     }
     
     private func getSavedData() {
-        //get data from cache
-        articles = defaults.object(forKey: "articlesSaved") as? [String] ?? [String]()
+        APIController().getSavedArticles { (articles, error) in
+            if let error = error {
+                self.showAlert(errorDescription: error.localizedDescription)
+                self.loader.stopAnimating()
+            }
+            if let articles = articles {
+                self.articles = articles
+                self.articlesTableView.reloadData()
+                self.loader.stopAnimating()
+            }
+        }
         refreshControl.endRefreshing()
     }
     
-    private func goToDetails(article: String) {
-        let yourViewController = ArticleDetailsViewController(nibName: "ArticleDetailsViewController", bundle: nil)
-        navigationController?.pushViewController(yourViewController, animated: true)
+    private func goToDetails(article: ArticleModel) {
+        guard let url = article.storyUrl else {
+            showAlert(errorDescription: "This article cant be open.\nIt does not have an associated url")
+            return
+        }
+        let detailsViewController = ArticleDetailsViewController(nibName: "ArticleDetailsViewController", bundle: nil)
+        detailsViewController.uriString = url
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
 
 }
 
 extension MainListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        generateSuccessImpactWhenTouch()
         goToDetails(article: articles[indexPath.row])
     }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        let articleSelected = articles[indexPath.row]
+        if editingStyle == .delete && articleSelected.storyId != nil {
+            generateSuccessImpactWhenTouch()
             articles.remove(at: indexPath.row)
+            if let id = articleSelected.storyId {
+                articlesIdDeleted.append(id)
+                DispatchQueue.main.async {
+                    APIController().setArticleDeleted(id: id)
+                }
+            }
             tableView.deleteRows(at: [indexPath], with: .fade)
+        } else {
+            generateErrorImpactWhenTouch()
+            self.showAlert(errorDescription: "Cant delete empty article")
         }
     }
     
@@ -111,6 +167,8 @@ extension MainListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
         
+        cell.setupCell(article: articles[indexPath.row])
+        
         return cell
     }
     
@@ -119,9 +177,9 @@ extension MainListViewController: UITableViewDataSource {
 extension MainListViewController: NetworkCheckObserver {
     func statusDidChange(status: NWPath.Status) {
         if status == .satisfied {
-            print(status)
+            getData()
         }else if status == .unsatisfied {
-            print(status)
+            getSavedData()
         }
     }
     

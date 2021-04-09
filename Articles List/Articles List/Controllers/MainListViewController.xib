@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainListViewController" customModule="Articles_List" customModuleProvider="target">
             <connections>
                 <outlet property="articlesTableView" destination="dpB-qG-wQz" id="wXQ-ym-FXu"/>
+                <outlet property="loader" destination="6QW-I1-diG" id="SWq-u8-anR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -23,12 +24,17 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="6QW-I1-diG">
+                    <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="6QW-I1-diG" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="WKv-oe-oKi"/>
                 <constraint firstItem="dpB-qG-wQz" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="YIt-gp-shk"/>
                 <constraint firstItem="dpB-qG-wQz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gLN-6y-afg"/>
+                <constraint firstItem="6QW-I1-diG" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="k96-qo-nXP"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dpB-qG-wQz" secondAttribute="trailing" id="kBt-mx-PWZ"/>
                 <constraint firstAttribute="bottom" secondItem="dpB-qG-wQz" secondAttribute="bottom" id="q9t-Me-TZX"/>
             </constraints>
