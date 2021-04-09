@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F42E5B5262024F2006EB74C /* NetworkCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F42E5B4262024F2006EB74C /* NetworkCheck.swift */; };
+		0F42E5BA262028DD006EB74C /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F42E5B8262028DD006EB74C /* ArticleTableViewCell.swift */; };
+		0F42E5BB262028DD006EB74C /* ArticleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F42E5B9262028DD006EB74C /* ArticleTableViewCell.xib */; };
+		0F42E5C026202CE0006EB74C /* ArticleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F42E5BE26202CE0006EB74C /* ArticleDetailsViewController.swift */; };
+		0F42E5C126202CE0006EB74C /* ArticleDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F42E5BF26202CE0006EB74C /* ArticleDetailsViewController.xib */; };
 		0FC0FFAD261FE69900DB0768 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0FFAC261FE69900DB0768 /* AppDelegate.swift */; };
 		0FC0FFB6261FE69900DB0768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FC0FFB5261FE69900DB0768 /* Assets.xcassets */; };
 		0FC0FFB9261FE69900DB0768 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0FC0FFB7261FE69900DB0768 /* LaunchScreen.storyboard */; };
@@ -17,6 +22,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F42E5B4262024F2006EB74C /* NetworkCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCheck.swift; sourceTree = "<group>"; };
+		0F42E5B8262028DD006EB74C /* ArticleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTableViewCell.swift; sourceTree = "<group>"; };
+		0F42E5B9262028DD006EB74C /* ArticleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleTableViewCell.xib; sourceTree = "<group>"; };
+		0F42E5BE26202CE0006EB74C /* ArticleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewController.swift; sourceTree = "<group>"; };
+		0F42E5BF26202CE0006EB74C /* ArticleDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleDetailsViewController.xib; sourceTree = "<group>"; };
 		0FC0FFA9261FE69900DB0768 /* Articles List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Articles List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FC0FFAC261FE69900DB0768 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FC0FFB5261FE69900DB0768 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -39,6 +49,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F42E5B7262028CB006EB74C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0F42E5B8262028DD006EB74C /* ArticleTableViewCell.swift */,
+				0F42E5B9262028DD006EB74C /* ArticleTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		0FC0FFA0261FE69900DB0768 = {
 			isa = PBXGroup;
 			children = (
@@ -82,8 +101,11 @@
 		0FC0FFC5261FE73E00DB0768 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0F42E5B7262028CB006EB74C /* Cells */,
 				0FC0FFC8261FE79E00DB0768 /* MainListViewController.swift */,
 				0FC0FFC9261FE79E00DB0768 /* MainListViewController.xib */,
+				0F42E5BE26202CE0006EB74C /* ArticleDetailsViewController.swift */,
+				0F42E5BF26202CE0006EB74C /* ArticleDetailsViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -91,6 +113,7 @@
 		0FC0FFC6261FE76800DB0768 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				0F42E5B4262024F2006EB74C /* NetworkCheck.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -167,8 +190,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F42E5BB262028DD006EB74C /* ArticleTableViewCell.xib in Resources */,
 				0FC0FFCB261FE79E00DB0768 /* MainListViewController.xib in Resources */,
 				0FC0FFB9261FE69900DB0768 /* LaunchScreen.storyboard in Resources */,
+				0F42E5C126202CE0006EB74C /* ArticleDetailsViewController.xib in Resources */,
 				0FC0FFB6261FE69900DB0768 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,8 +206,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FC0FFAD261FE69900DB0768 /* AppDelegate.swift in Sources */,
+				0F42E5B5262024F2006EB74C /* NetworkCheck.swift in Sources */,
 				0FC0FFCA261FE79E00DB0768 /* MainListViewController.swift in Sources */,
+				0F42E5C026202CE0006EB74C /* ArticleDetailsViewController.swift in Sources */,
 				0FC0FFD0261FE96000DB0768 /* SceneDelegate.swift in Sources */,
+				0F42E5BA262028DD006EB74C /* ArticleTableViewCell.swift in Sources */,
 				0FC0FFD6261FEC9700DB0768 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
