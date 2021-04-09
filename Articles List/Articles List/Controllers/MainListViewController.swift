@@ -13,6 +13,7 @@ final class MainListViewController: UIViewController {
     private var networkCheck = NetworkCheck.sharedInstance()
     private var refreshControl = UIRefreshControl()
     private var articles = ["", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    private let defaults = UserDefaults.standard
     @IBOutlet private weak var articlesTableView: UITableView!
     
 
@@ -21,6 +22,7 @@ final class MainListViewController: UIViewController {
         setupUI()
         setupTableViewDelegates()
         registerTableViewCell()
+        setupPullToRefresh()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,13 +45,12 @@ final class MainListViewController: UIViewController {
     }
     
     private func setupPullToRefresh() {
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-           refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
         articlesTableView.addSubview(refreshControl)
     }
     
     @objc func refresh(_ sender: AnyObject) {
-       
+        checkIfNetworkActive()
     }
     
     private func setupUI() {
@@ -64,14 +65,21 @@ final class MainListViewController: UIViewController {
             getSavedData()
         }
         networkCheck.addObserver(observer: self)
+        articlesTableView.reloadData()
     }
     
     private func getData() {
+        //get data from API
         
+        
+        defaults.set(articles, forKey: "articlesSaved")
+        refreshControl.endRefreshing()
     }
     
     private func getSavedData() {
-        
+        //get data from cache
+        articles = defaults.object(forKey: "articlesSaved") as? [String] ?? [String]()
+        refreshControl.endRefreshing()
     }
     
     private func goToDetails(article: String) {
@@ -106,7 +114,6 @@ extension MainListViewController: UITableViewDataSource {
         return cell
     }
     
-    
 }
 
 extension MainListViewController: NetworkCheckObserver {
@@ -117,4 +124,5 @@ extension MainListViewController: NetworkCheckObserver {
             print(status)
         }
     }
+    
 }
