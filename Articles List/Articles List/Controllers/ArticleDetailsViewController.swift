@@ -8,8 +8,8 @@
 import UIKit
 import WebKit
 
+
 final class ArticleDetailsViewController: UIViewController {
-    
     
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var loader: UIActivityIndicatorView!

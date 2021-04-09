@@ -12,9 +12,7 @@ import CoreData
 
 
 class APIController: NSObject {
-    
     typealias GetFullListCompletionHandler = ([ArticleModel]? , AFError?) -> Void
-
     
     func fetchArticles(completion: @escaping GetFullListCompletionHandler) {
         let uri = "https://hn.algolia.com/api/v1/search_by_date?query=mobile"
