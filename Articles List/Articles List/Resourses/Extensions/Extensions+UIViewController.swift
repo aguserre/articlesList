@@ -11,9 +11,12 @@ extension UIViewController {
 
     func clearNavBar() {
         navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
     }
     
     func generateSuccessImpactWhenTouch() {
