@@ -135,8 +135,13 @@ final class MainListViewController: UIViewController {
 
 extension MainListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        generateSuccessImpactWhenTouch()
-        goToDetails(article: articles[indexPath.row])
+        if networkCheck.currentStatus == .satisfied {
+            generateSuccessImpactWhenTouch()
+            goToDetails(article: articles[indexPath.row])
+        } else {
+            generateErrorImpactWhenTouch()
+            showAlert(errorDescription: "Your connection has been lost")
+        }
     }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
