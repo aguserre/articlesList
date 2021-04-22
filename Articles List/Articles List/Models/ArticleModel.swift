@@ -5,32 +5,46 @@
 //  Created by Agustin Errecalde on 09/04/2021.
 //
 
-import ObjectMapper
+struct Hits {
+    var hits: [ArticleModel2]
+}
 
-final class ArticleModel: Mappable {
+extension Hits: Decodable {
+    enum Keys: String, CodingKey {
+        case hits
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        
+        self.hits = try container.decode([ArticleModel2].self, forKey: .hits)
+    }
+}
 
-    var storyId: Int?
+struct ArticleModel2 {
+    var parentId: Int?
     var storyTitle: String?
     var storyUrl: String?
     var author: String?
-    var createdAt: Int?
+    var createdAtI: Int?
+}
 
-    required init?(map: Map) {}
-
-    func mapping(map: Map) {
-        storyId <- map["parent_id"]
-        storyTitle <- map["story_title"]
-        storyUrl <- map["story_url"]
-        author <- map["author"]
-        createdAt <- map["created_at_i"]
+extension ArticleModel2: Decodable {
+    enum Keys: String, CodingKey {
+        case parentId
+        case storyTitle
+        case storyUrl
+        case author
+        case createdAtI
     }
-
-    func toDictionary() -> NSDictionary {
-        return ["parent_id": storyId  ?? "",
-                "story_title": storyTitle ?? [:],
-                "story_url": storyUrl ?? "",
-                "author": author as Any,
-                "created_at_i" : createdAt as Any] as NSDictionary
-    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
         
+        self.parentId = try container.decode(Int?.self, forKey: .parentId)
+        self.storyTitle = try container.decode(String?.self, forKey: .storyTitle)
+        self.storyUrl = try container.decode(String?.self, forKey: .storyUrl)
+        self.author = try container.decode(String?.self, forKey: .author)
+        self.createdAtI = try container.decode(Int?.self, forKey: .createdAtI)
+    }
 }

@@ -12,62 +12,92 @@ import CoreData
 
 
 class APIController: NSObject {
-    typealias GetFullListCompletionHandler = ([ArticleModel]? , AFError?) -> Void
     
-    func fetchArticles(completion: @escaping GetFullListCompletionHandler) {
-        let uri = "https://hn.algolia.com/api/v1/search_by_date?query=mobile"
-        var articles = [ArticleModel]()
+    func fetchArticles(completion: @escaping (Swift.Result<[ArticleModel2], Error>) -> Void) {
         var articlesDeleted = [Int]()
-        getArticlesDeleted { (articles, error) in
+        var articlesFiltered = [ArticleModel2]()
+        getArticlesIdDeleted { (articles) in
             if let articles = articles {
                 articlesDeleted = articles
             }
         }
-        AF.request(uri).responseJSON { (response) in
-            switch response.result {
-            case.success(let data):
-                if let JSON = data as? [String : Any],
-                   let articlesArray = JSON["hits"] as? [[String : Any]] {
-                    self.deleteAllRecords()
-                    for art in articlesArray {
-                        if let articleObject = ArticleModel(JSON: art) {
-                            if !articlesDeleted.contains(articleObject.storyId ?? -1) {
-                                articles.append(articleObject)
-                                self.savedNewArticles(article: articleObject)
-                            }
+        
+        AF.request(apiUri)
+            .validate()
+            .responseDecodable(of: Hits.self, completionHandler: { (response) in
+                guard let data = response.data else { return }
+                self.deleteAllRecords()
+                do {
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    let result = try decoder.decode(Hits.self, from: data)
+                    for article in result.hits {
+                        if !articlesDeleted.contains(article.parentId ?? -1) {
+                            self.savedNewArticles(article: article)
+                            articlesFiltered.append(article)
                         }
                     }
+                    completion(.success(articlesFiltered))
+                }  catch {
+                    completion(.failure(error))
                 }
-                completion(articles, nil)
-            case.failure(let error) :
-                completion(nil, error)
-            }
-        }
+            })
     }
     
-    func getArticlesDeleted(completion: @escaping ([Int]?, Error?) -> Void) {
+    func getSavedArticles(completion: @escaping (Swift.Result<[ArticleModel2], Error>) -> Void) {
+        var articlesDeleted = [Int]()
+        getArticlesIdDeleted { (articles) in
+            if let articles = articles {
+                articlesDeleted = articles
+            }
+        }
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ArticlesDeleted")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: articleModelSaved)
         request.returnsObjectsAsFaults = true
         
         do {
             let result = try context.fetch(request)
+            var articles = [ArticleModel2]()
+            DispatchQueue.main.async {
+                for datsa in result as! [NSManagedObject] {
+                    let article: ArticleModel2 = ArticleModel2(parentId: datsa.value(forKey: "parent_id") as? Int,
+                                                               storyTitle: datsa.value(forKey: "story_title") as Any as? String,
+                                                               storyUrl: datsa.value(forKey: "story_url") as Any as? String,
+                                                               author: datsa.value(forKey: "author") as Any as? String,
+                                                               createdAtI: datsa.value(forKey: "created_at_i") as Any as? Int)
+                    if !articlesDeleted.contains(article.parentId ?? -1) {
+                        articles.append(article)
+                    }
+                }
+                completion(.success(articles))
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func getArticlesIdDeleted(completion: @escaping ([Int]?) -> Void) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: articleModelDeleted)
+        request.returnsObjectsAsFaults = true
+        
+        do {
+            let result = try? context.fetch(request)
             var articlesDeleted = [Int]()
             for data in result as! [NSManagedObject] {
                 articlesDeleted.append(data.value(forKey: "id") as! Int)
             }
-            completion(articlesDeleted, nil)
-        } catch {
-            completion(nil, error)
+            completion(articlesDeleted)
         }
     }
     
-    func setArticleDeleted(id: Int) {
+    func setArticleIdDeleted(id: Int) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        guard let entity = NSEntityDescription.entity(forEntityName: "ArticlesDeleted", in: context) else {
+        guard let entity = NSEntityDescription.entity(forEntityName: articleModelDeleted, in: context) else {
             return
         }
         let newArticle = NSManagedObject(entity: entity, insertInto: context)
@@ -79,62 +109,23 @@ class APIController: NSObject {
         }
     }
     
-    
-    func getSavedArticles(completion: @escaping ([ArticleModel]?, Error?) -> Void) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ArticleModelCD")
-        request.returnsObjectsAsFaults = true
-        
-        do {
-            let result = try context.fetch(request)
-            var articles = [ArticleModel]()
-            var articlesDeleted = [Int]()
-            for data in result as! [NSManagedObject] {
-                let dic: [String : Any] = [
-                    "parent_id" : data.value(forKey: "parent_id") as Any,
-                    "story_title" : data.value(forKey: "story_title") as Any,
-                    "story_url" : data.value(forKey: "story_url") as Any,
-                    "author" : data.value(forKey: "author") as Any,
-                    "created_at_i" : data.value(forKey: "created_at_i") as Any]
-                
-                if let articleObject = ArticleModel(JSON: dic) {
-                    getArticlesDeleted { (articles, error) in
-                        if let articles = articles {
-                            articlesDeleted = articles
-                        }
-                    }
-                    if !articlesDeleted.contains(articleObject.storyId ?? -1) {
-                        articles.append(articleObject)
-                    }
-                }
-            }
-            completion(articles, nil)
-        } catch {
-            completion(nil, error)
-        }
-
-    }
-    
-    func savedNewArticles(article: ArticleModel) {
+    func savedNewArticles(article: ArticleModel2) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        guard let entity = NSEntityDescription.entity(forEntityName: "ArticleModelCD", in: context) else {
+        guard let entity = NSEntityDescription.entity(forEntityName: articleModelSaved, in: context) else {
             return
         }
         
         let newArticle = NSManagedObject(entity: entity, insertInto: context)
-        newArticle.setValue(article.storyId, forKey: "parent_id")
+        newArticle.setValue(article.parentId, forKey: "parent_id")
         newArticle.setValue(article.storyTitle, forKey: "story_title")
         newArticle.setValue(article.storyUrl, forKey: "story_url")
         newArticle.setValue(article.author, forKey: "author")
-        newArticle.setValue(article.createdAt, forKey: "created_at_i")
+        newArticle.setValue(article.createdAtI, forKey: "created_at_i")
         
         do {
-            try context.save()
-        } catch {
-            print(error.localizedDescription)
+            try? context.save()
         }
     }
     
@@ -142,14 +133,14 @@ class APIController: NSObject {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         let context = delegate.persistentContainer.viewContext
 
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "ArticleModelCD")
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: articleModelSaved)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 
         do {
             try context.execute(deleteRequest)
             try context.save()
         } catch {
-            print ("There was an error")
+            debugPrint(removeRecordsError)
         }
     }
     

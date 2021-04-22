@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,8 @@
 		0F42E5BB262028DD006EB74C /* ArticleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F42E5B9262028DD006EB74C /* ArticleTableViewCell.xib */; };
 		0F42E5C026202CE0006EB74C /* ArticleDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F42E5BE26202CE0006EB74C /* ArticleDetailsViewController.swift */; };
 		0F42E5C126202CE0006EB74C /* ArticleDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0F42E5BF26202CE0006EB74C /* ArticleDetailsViewController.xib */; };
+		0F49DA5D26313AD8001493FE /* Extension+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F49DA5C26313AD8001493FE /* Extension+Int.swift */; };
+		0F49DA6026313B42001493FE /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F49DA5F26313B42001493FE /* Strings.swift */; };
 		0FC0FFAD261FE69900DB0768 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0FFAC261FE69900DB0768 /* AppDelegate.swift */; };
 		0FC0FFB6261FE69900DB0768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FC0FFB5261FE69900DB0768 /* Assets.xcassets */; };
 		0FC0FFCA261FE79E00DB0768 /* MainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0FFC8261FE79E00DB0768 /* MainListViewController.swift */; };
@@ -34,6 +36,8 @@
 		0F42E5B9262028DD006EB74C /* ArticleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleTableViewCell.xib; sourceTree = "<group>"; };
 		0F42E5BE26202CE0006EB74C /* ArticleDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailsViewController.swift; sourceTree = "<group>"; };
 		0F42E5BF26202CE0006EB74C /* ArticleDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleDetailsViewController.xib; sourceTree = "<group>"; };
+		0F49DA5C26313AD8001493FE /* Extension+Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Int.swift"; sourceTree = "<group>"; };
+		0F49DA5F26313B42001493FE /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0FC0FFA9261FE69900DB0768 /* Articles List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Articles List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FC0FFAC261FE69900DB0768 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FC0FFB5261FE69900DB0768 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 				0FC0FFCF261FE95F00DB0768 /* SceneDelegate.swift */,
 				0FC0FFB5261FE69900DB0768 /* Assets.xcassets */,
 				0FC0FFBA261FE69900DB0768 /* Info.plist */,
+				0F49DA5F26313B42001493FE /* Strings.swift */,
 			);
 			path = Resourses;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				0FC0FFD5261FEC9700DB0768 /* Extensions+UIViewController.swift */,
+				0F49DA5C26313AD8001493FE /* Extension+Int.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -208,7 +214,7 @@
 				};
 			};
 			buildConfigurationList = 0FC0FFA4261FE69900DB0768 /* Build configuration list for PBXProject "Articles List" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -286,6 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F49DA5D26313AD8001493FE /* Extension+Int.swift in Sources */,
 				0FC0FFAD261FE69900DB0768 /* AppDelegate.swift in Sources */,
 				0F1ABA112620AAF100A6E32D /* ArticleModelCD.xcdatamodeld in Sources */,
 				0F1ABA0C2620906C00A6E32D /* ArticleModel.swift in Sources */,
@@ -295,6 +302,7 @@
 				0F42E5C026202CE0006EB74C /* ArticleDetailsViewController.swift in Sources */,
 				0FC0FFD0261FE96000DB0768 /* SceneDelegate.swift in Sources */,
 				0F42E5BA262028DD006EB74C /* ArticleTableViewCell.swift in Sources */,
+				0F49DA6026313B42001493FE /* Strings.swift in Sources */,
 				0FC0FFD6261FEC9700DB0768 /* Extensions+UIViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

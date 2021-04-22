@@ -13,7 +13,7 @@ final class MainListViewController: UIViewController {
     
     private var networkCheck = NetworkCheck.sharedInstance()
     private var refreshControl = UIRefreshControl()
-    private var articles = [ArticleModel]()
+    private var articles = [ArticleModel2]()
     private var articlesIdDeleted = [Int]()
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet private weak var articlesTableView: UITableView!
@@ -65,7 +65,7 @@ final class MainListViewController: UIViewController {
     
     private func setupUI() {
         clearNavBar()
-        title = "Article list"
+        title = articleListTitle
     }
     
     private func checkIfNetworkActive() {
@@ -83,47 +83,46 @@ final class MainListViewController: UIViewController {
     }
     
     private func showAlert(errorDescription: String) {
-        let alert = UIAlertController(title: "Error", message: errorDescription, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let alert = UIAlertController(title: errorTitle, message: errorDescription, preferredStyle: .alert)
+        let action = UIAlertAction(title: okTitle, style: .default, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
     
     private func getData() {
-        APIController().fetchArticles { (articles, error) in
-            if let error = error {
-                self.showAlert(errorDescription: error.localizedDescription)
-                self.loader.stopAnimating()
-            }
-            
-            if let articles = articles {
+        APIController().fetchArticles { result in
+            switch result {
+            case .success(let articles):
                 self.articles = articles
                 self.articlesTableView.reloadData()
                 self.loader.stopAnimating()
+            case .failure(let error):
+                self.showAlert(errorDescription: error.localizedDescription)
+                self.loader.stopAnimating()
             }
-            
         }
+
         refreshControl.endRefreshing()
     }
     
     private func getSavedData() {
-        APIController().getSavedArticles { (articles, error) in
-            if let error = error {
-                self.showAlert(errorDescription: error.localizedDescription)
-                self.loader.stopAnimating()
-            }
-            if let articles = articles {
+        APIController().getSavedArticles { result in
+            switch result {
+            case .success(let articles):
                 self.articles = articles
                 self.articlesTableView.reloadData()
+                self.loader.stopAnimating()
+            case .failure(let error):
+                self.showAlert(errorDescription: error.localizedDescription)
                 self.loader.stopAnimating()
             }
         }
         refreshControl.endRefreshing()
     }
     
-    private func goToDetails(article: ArticleModel) {
+    private func goToDetails(article: ArticleModel2) {
         guard let url = article.storyUrl else {
-            showAlert(errorDescription: "This article cant be open.\nIt does not have an associated url")
+            showAlert(errorDescription: removeEmptyUrlError)
             return
         }
         let detailsViewController = ArticleDetailsViewController(nibName: "ArticleDetailsViewController", bundle: nil)
@@ -140,25 +139,25 @@ extension MainListViewController: UITableViewDelegate {
             goToDetails(article: articles[indexPath.row])
         } else {
             generateErrorImpactWhenTouch()
-            showAlert(errorDescription: "Your connection has been lost")
+            showAlert(errorDescription: lostConnectionError)
         }
     }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let articleSelected = articles[indexPath.row]
-        if editingStyle == .delete && articleSelected.storyId != nil {
+        if editingStyle == .delete && articleSelected.parentId != nil {
             generateSuccessImpactWhenTouch()
             articles.remove(at: indexPath.row)
-            if let id = articleSelected.storyId {
+            if let id = articleSelected.parentId {
                 articlesIdDeleted.append(id)
                 DispatchQueue.main.async {
-                    APIController().setArticleDeleted(id: id)
+                     APIController().setArticleIdDeleted(id: id)
                 }
             }
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else {
             generateErrorImpactWhenTouch()
-            self.showAlert(errorDescription: "Cant delete empty article")
+            self.showAlert(errorDescription: emptyArticleError)
         }
     }
     

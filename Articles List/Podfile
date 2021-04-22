@@ -7,6 +7,5 @@ target 'Articles List' do
 
   # Pods for Articles List
   pod 'Alamofire'
-  pod 'ObjectMapper'
   
 end

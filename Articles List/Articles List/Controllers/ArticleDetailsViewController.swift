@@ -55,7 +55,7 @@ final class ArticleDetailsViewController: UIViewController {
     
     private func load() {
         guard let url = URL(string: uriString) else {
-            showAlert(errorDescription: "This site cant be load")
+            showAlert(errorDescription: siteCantBeLoadError)
             return
         }
         webView.load(URLRequest(url: url))
@@ -63,8 +63,8 @@ final class ArticleDetailsViewController: UIViewController {
     }
     
     private func showAlert(errorDescription: String) {
-        let alert = UIAlertController(title: "Error", message: errorDescription, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+        let alert = UIAlertController(title: errorTitle, message: errorDescription, preferredStyle: .alert)
+        let action = UIAlertAction(title: okTitle, style: .default) { (action) in
             self.navigationController?.popViewController(animated: true)
         }
         alert.addAction(action)
