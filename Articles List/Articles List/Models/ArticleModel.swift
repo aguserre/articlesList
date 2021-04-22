@@ -6,7 +6,7 @@
 //
 
 struct Hits {
-    var hits: [ArticleModel2]
+    var hits: [ArticleModel]
 }
 
 extension Hits: Decodable {
@@ -17,11 +17,11 @@ extension Hits: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Keys.self)
         
-        self.hits = try container.decode([ArticleModel2].self, forKey: .hits)
+        self.hits = try container.decode([ArticleModel].self, forKey: .hits)
     }
 }
 
-struct ArticleModel2 {
+struct ArticleModel {
     var parentId: Int?
     var storyTitle: String?
     var storyUrl: String?
@@ -29,7 +29,7 @@ struct ArticleModel2 {
     var createdAtI: Int?
 }
 
-extension ArticleModel2: Decodable {
+extension ArticleModel: Decodable {
     enum Keys: String, CodingKey {
         case parentId
         case storyTitle

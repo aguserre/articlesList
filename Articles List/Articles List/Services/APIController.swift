@@ -13,9 +13,9 @@ import CoreData
 
 class APIController: NSObject {
     
-    func fetchArticles(completion: @escaping (Swift.Result<[ArticleModel2], Error>) -> Void) {
+    func fetchArticles(completion: @escaping (Swift.Result<[ArticleModel], Error>) -> Void) {
         var articlesDeleted = [Int]()
-        var articlesFiltered = [ArticleModel2]()
+        var articlesFiltered = [ArticleModel]()
         getArticlesIdDeleted { (articles) in
             if let articles = articles {
                 articlesDeleted = articles
@@ -44,7 +44,7 @@ class APIController: NSObject {
             })
     }
     
-    func getSavedArticles(completion: @escaping (Swift.Result<[ArticleModel2], Error>) -> Void) {
+    func getSavedArticles(completion: @escaping (Swift.Result<[ArticleModel], Error>) -> Void) {
         var articlesDeleted = [Int]()
         getArticlesIdDeleted { (articles) in
             if let articles = articles {
@@ -58,14 +58,14 @@ class APIController: NSObject {
         
         do {
             let result = try context.fetch(request)
-            var articles = [ArticleModel2]()
+            var articles = [ArticleModel]()
             DispatchQueue.main.async {
-                for datsa in result as! [NSManagedObject] {
-                    let article: ArticleModel2 = ArticleModel2(parentId: datsa.value(forKey: "parent_id") as? Int,
-                                                               storyTitle: datsa.value(forKey: "story_title") as Any as? String,
-                                                               storyUrl: datsa.value(forKey: "story_url") as Any as? String,
-                                                               author: datsa.value(forKey: "author") as Any as? String,
-                                                               createdAtI: datsa.value(forKey: "created_at_i") as Any as? Int)
+                for data in result as! [NSManagedObject] {
+                    let article: ArticleModel = ArticleModel(parentId: data.value(forKey: "parent_id") as? Int,
+                                                               storyTitle: data.value(forKey: "story_title") as Any as? String,
+                                                               storyUrl: data.value(forKey: "story_url") as Any as? String,
+                                                               author: data.value(forKey: "author") as Any as? String,
+                                                               createdAtI: data.value(forKey: "created_at_i") as Any as? Int)
                     if !articlesDeleted.contains(article.parentId ?? -1) {
                         articles.append(article)
                     }
@@ -109,7 +109,7 @@ class APIController: NSObject {
         }
     }
     
-    func savedNewArticles(article: ArticleModel2) {
+    func savedNewArticles(article: ArticleModel) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         

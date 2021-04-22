@@ -13,7 +13,7 @@ final class MainListViewController: UIViewController {
     
     private var networkCheck = NetworkCheck.sharedInstance()
     private var refreshControl = UIRefreshControl()
-    private var articles = [ArticleModel2]()
+    private var articles = [ArticleModel]()
     private var articlesIdDeleted = [Int]()
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet private weak var articlesTableView: UITableView!
@@ -120,7 +120,7 @@ final class MainListViewController: UIViewController {
         refreshControl.endRefreshing()
     }
     
-    private func goToDetails(article: ArticleModel2) {
+    private func goToDetails(article: ArticleModel) {
         guard let url = article.storyUrl else {
             showAlert(errorDescription: removeEmptyUrlError)
             return
