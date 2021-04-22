@@ -8,7 +8,6 @@
 import UIKit
 import Network
 
-
 final class MainListViewController: UIViewController {
     
     private var networkCheck = NetworkCheck.sharedInstance()
