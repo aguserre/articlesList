@@ -41,6 +41,10 @@ class Articles_List_Tests: XCTestCase {
         XCTAssertNotNil(viewControllerUnderTest.articlesTableView.delegate)
     }
     
+    func testHasTableViewCell() {
+        XCTAssertNotNil(viewControllerUnderTest.articlesTableView.register(UINib(nibName: "ArticleTableViewCell", bundle: nil), forCellReuseIdentifier: "ArticleTableViewCell"))
+    }
+    
     func testTableViewConfromsToTableViewDelegateProtocol() {
         XCTAssertTrue(viewControllerUnderTest.conforms(to: UITableViewDelegate.self))
         XCTAssertTrue(viewControllerUnderTest.responds(to: #selector(viewControllerUnderTest.tableView(_:didSelectRowAt:))))
