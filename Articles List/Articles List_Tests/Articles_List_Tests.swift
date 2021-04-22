@@ -6,13 +6,15 @@
 //
 
 import XCTest
-import UIKit
+import Foundation
+@testable import Articles_List
 
 class Articles_List_Tests: XCTestCase {
     
     var sut: URLSession!
     let urlString =
     "https://hn.algolia.com/api/v1/search_by_date?query=mobile"
+    var viewControllerUnderTest: MainListViewController!
 
     override func setUpWithError() throws {
       try super.setUpWithError()
@@ -24,6 +26,38 @@ class Articles_List_Tests: XCTestCase {
       try super.tearDownWithError()
     }
     
+    override func setUp() {
+      super.setUp()
+        viewControllerUnderTest = MainListViewController()
+        self.viewControllerUnderTest.loadView()
+        self.viewControllerUnderTest.viewDidLoad()
+    }
+    
+    //Table test
+    func testHasATableView() {
+        XCTAssertNotNil(viewControllerUnderTest.articlesTableView)
+    }
+    
+    func testTableViewHasDelegate() {
+        XCTAssertNotNil(viewControllerUnderTest.articlesTableView.delegate)
+    }
+    
+    func testTableViewConfromsToTableViewDelegateProtocol() {
+        XCTAssertTrue(viewControllerUnderTest.conforms(to: UITableViewDelegate.self))
+        XCTAssertTrue(viewControllerUnderTest.responds(to: #selector(viewControllerUnderTest.tableView(_:didSelectRowAt:))))
+    }
+    
+    func testTableViewHasDataSource() {
+            XCTAssertNotNil(viewControllerUnderTest.articlesTableView.dataSource)
+    }
+        
+    func testTableViewConformsToTableViewDataSourceProtocol() {
+        XCTAssertTrue(viewControllerUnderTest.conforms(to: UITableViewDataSource.self))
+        XCTAssertTrue(viewControllerUnderTest.responds(to: #selector(viewControllerUnderTest.tableView(_:numberOfRowsInSection:))))
+        XCTAssertTrue(viewControllerUnderTest.responds(to: #selector(viewControllerUnderTest.tableView(_:cellForRowAt:))))
+    }
+    
+    //API test
     func testValidApiCallGetsHTTPStatusCode200() throws {
         let url = URL(string: urlString)!
         let promise = expectation(description: "Status code: 200")

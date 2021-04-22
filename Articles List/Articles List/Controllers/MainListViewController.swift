@@ -15,7 +15,7 @@ final class MainListViewController: UIViewController {
     private var articles = [ArticleModel]()
     private var articlesIdDeleted = [Int]()
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    @IBOutlet private weak var articlesTableView: UITableView!
+    @IBOutlet weak var articlesTableView: UITableView!
     @IBOutlet private weak var loader: UIActivityIndicatorView!
     
 
