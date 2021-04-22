@@ -6,7 +6,6 @@
 //
 
 import XCTest
-import Foundation
 @testable import Articles_List
 
 class Articles_List_Tests: XCTestCase {
