@@ -20,6 +20,7 @@
 		0F49DA6026313B42001493FE /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F49DA5F26313B42001493FE /* Strings.swift */; };
 		0F5A0B8E2631A5A300B17D4F /* Articles_List_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5A0B8D2631A5A300B17D4F /* Articles_List_Tests.swift */; };
 		0F5A0B982631B9E100B17D4F /* CoreData_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5A0B972631B9E100B17D4F /* CoreData_Tests.swift */; };
+		0F5A0B9C2631BDB500B17D4F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5A0B9B2631BDB500B17D4F /* CoreDataManager.swift */; };
 		0FC0FFAD261FE69900DB0768 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0FFAC261FE69900DB0768 /* AppDelegate.swift */; };
 		0FC0FFB6261FE69900DB0768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FC0FFB5261FE69900DB0768 /* Assets.xcassets */; };
 		0FC0FFCA261FE79E00DB0768 /* MainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0FFC8261FE79E00DB0768 /* MainListViewController.swift */; };
@@ -54,6 +55,7 @@
 		0F5A0B8D2631A5A300B17D4F /* Articles_List_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Articles_List_Tests.swift; sourceTree = "<group>"; };
 		0F5A0B8F2631A5A300B17D4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F5A0B972631B9E100B17D4F /* CoreData_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData_Tests.swift; sourceTree = "<group>"; };
+		0F5A0B9B2631BDB500B17D4F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		0FC0FFA9261FE69900DB0768 /* Articles List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Articles List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FC0FFAC261FE69900DB0768 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0FC0FFB5261FE69900DB0768 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			children = (
 				0F42E5B4262024F2006EB74C /* NetworkCheck.swift */,
 				0F1ABA0326208D3500A6E32D /* APIController.swift */,
+				0F5A0B9B2631BDB500B17D4F /* CoreDataManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				0F42E5B5262024F2006EB74C /* NetworkCheck.swift in Sources */,
 				0FC0FFCA261FE79E00DB0768 /* MainListViewController.swift in Sources */,
 				0F1ABA0426208D3500A6E32D /* APIController.swift in Sources */,
+				0F5A0B9C2631BDB500B17D4F /* CoreDataManager.swift in Sources */,
 				0F42E5C026202CE0006EB74C /* ArticleDetailsViewController.swift in Sources */,
 				0FC0FFD0261FE96000DB0768 /* SceneDelegate.swift in Sources */,
 				0F42E5BA262028DD006EB74C /* ArticleTableViewCell.swift in Sources */,

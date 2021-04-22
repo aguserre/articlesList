@@ -51,8 +51,7 @@ class APIController: NSObject {
                 articlesDeleted = articles
             }
         }
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        let context = CoreDataManager.shared.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: articleModelSaved)
         request.returnsObjectsAsFaults = true
         
@@ -78,8 +77,7 @@ class APIController: NSObject {
     }
     
     func getArticlesIdDeleted(completion: @escaping ([Int]?) -> Void) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+        let context = CoreDataManager.shared.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: articleModelDeleted)
         request.returnsObjectsAsFaults = true
         
@@ -94,9 +92,7 @@ class APIController: NSObject {
     }
     
     func setArticleIdDeleted(id: Int) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
+        let context = CoreDataManager.shared.persistentContainer.viewContext
         guard let entity = NSEntityDescription.entity(forEntityName: articleModelDeleted, in: context) else {
             return
         }
@@ -110,9 +106,7 @@ class APIController: NSObject {
     }
     
     func savedNewArticles(article: ArticleModel) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
+        let context = CoreDataManager.shared.persistentContainer.viewContext
         guard let entity = NSEntityDescription.entity(forEntityName: articleModelSaved, in: context) else {
             return
         }
@@ -130,9 +124,7 @@ class APIController: NSObject {
     }
     
     func deleteAllRecords() {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        let context = delegate.persistentContainer.viewContext
-
+        let context = CoreDataManager.shared.persistentContainer.viewContext
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: articleModelSaved)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 
