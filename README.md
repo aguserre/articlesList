@@ -4,7 +4,7 @@ Connection to API which shows recently posted articles about Android or iOS.
 
 1-  Download or Clone repo (all pods are included).
 
-2-  Open "Articles List.xcworkspace" with XCode version >= 9.3.
+2-  Open "Articles List.xcworkspace" with XCode version >= 12.
 
 3-  Run.
 
